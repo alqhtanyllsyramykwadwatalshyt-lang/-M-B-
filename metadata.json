@@ -1,0 +1,8 @@
+{
+  "name": "Remix مصنع جيزان للأنابيب والتوصيلات - حملة اختبار السباك",
+  "description": "عارض فيديوهات حملة اختبار السباك وجولة تفاعلية داخل مصنع جيزان للأنابيب البلاستيكية والتوصيلات M\u0026B، مع مجسم 3D وخريطة مواقع الفروع والموزعين.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

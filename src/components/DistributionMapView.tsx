@@ -15,10 +15,12 @@ import {
   CheckCircle2,
   PlusCircle,
   X,
+  Map as MapIcon,
 } from 'lucide-react';
 import { soundEffects } from '../utils/soundEffects';
 import { useToast } from '../context/ToastContext';
 import { FACTORY_CONTACT } from '../data/catalogProfile';
+import { GoogleMapView } from './GoogleMapView';
 import {
   RegionFilter,
   filterBranchesByRegion,
@@ -72,6 +74,9 @@ export const DistributionMapView: React.FC = () => {
   const [selectedBranch, setSelectedBranch] = useState<FactoryBranch>(FACTORY_BRANCHES[0]);
   const [activeRegion, setActiveRegion] = useState<RegionFilter>('all');
   const [showRoutes, setShowRoutes] = useState<boolean>(true);
+  const [mapMode, setMapMode] = useState<'google' | 'vector'>(() =>
+    import.meta.env.VITE_GOOGLE_MAPS_API_KEY ? 'google' : 'vector'
+  );
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
 
   const [newBranchForm, setNewBranchForm] = useState({
@@ -389,12 +394,16 @@ export const DistributionMapView: React.FC = () => {
                       {isSelected ? 'محدد على الخريطة' : 'عرض بالخريطة'}
                     </button>
                     <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${branch.coordinates.lat},${branch.coordinates.lng}`}
+                      href={
+                        branch.id === 'gizan-factory-taiz'
+                          ? FACTORY_CONTACT.googleMapsUrl
+                          : `https://www.google.com/maps/search/?api=1&query=${branch.coordinates.lat},${branch.coordinates.lng}`
+                      }
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-slate-300 hover:text-white flex items-center gap-1 bg-slate-800 px-2.5 py-1 rounded-lg text-[11px]"
                     >
-                      <span>الإحداثيات</span>
+                      <span>{branch.id === 'gizan-factory-taiz' ? 'خرائط Google' : 'الإحداثيات'}</span>
                       <ExternalLink className="w-3 h-3 text-slate-400" />
                     </a>
                   </div>
@@ -408,34 +417,87 @@ export const DistributionMapView: React.FC = () => {
         <div className="order-1 lg:order-2 lg:col-span-7 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl relative bg-[#051320] flex flex-col justify-between">
           {/* Top Map Overlay Header */}
           <div className="px-4 py-3 flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-sm z-10">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <Compass className="w-4 h-4 text-[#0A73C7]" />
               <span className="text-xs font-bold text-slate-200">
                 خريطة شبكة التوزيع التفاعلية — الجمهورية اليمنية
               </span>
             </div>
-            <div className="flex items-center gap-3 text-[11px] text-slate-400">
-              <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#C81D25] inline-block"></span>
-                المصنع الرئيسي
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#0A73C7] inline-block"></span>
-                مركز توزيع
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
-                منفذ معتمد
-              </span>
+
+            <div className="flex flex-wrap items-center gap-2.5">
+              {/* Map Engine Switcher */}
+              <div
+                className="inline-flex items-center rounded-xl bg-slate-900 border border-slate-700/80 p-0.5"
+                role="group"
+                aria-label="اختيار نمط الخريطة"
+              >
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMapMode('google');
+                    soundEffects.playClick();
+                  }}
+                  aria-pressed={mapMode === 'google'}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition flex items-center gap-1 cursor-pointer ${
+                    mapMode === 'google'
+                      ? 'bg-[#0A73C7] text-white shadow'
+                      : 'text-slate-300 hover:text-white'
+                  }`}
+                >
+                  <MapIcon className="w-3 h-3" />
+                  <span>خرائط Google</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMapMode('vector');
+                    soundEffects.playClick();
+                  }}
+                  aria-pressed={mapMode === 'vector'}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition flex items-center gap-1 cursor-pointer ${
+                    mapMode === 'vector'
+                      ? 'bg-[#C81D25] text-white shadow'
+                      : 'text-slate-300 hover:text-white'
+                  }`}
+                >
+                  <Compass className="w-3 h-3" />
+                  <span>الشبكة الهندسية</span>
+                </button>
+              </div>
+
+              <div className="hidden sm:flex items-center gap-3 text-[11px] text-slate-400">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#C81D25] inline-block"></span>
+                  المصنع الرئيسي
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#0A73C7] inline-block"></span>
+                  مركز توزيع
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                  منفذ معتمد
+                </span>
+              </div>
             </div>
           </div>
 
-          {/* Vector Yemen Map Stage */}
-          <div className="relative flex-1 flex items-center justify-center px-3 py-3 sm:px-5 sm:py-4 overflow-hidden bg-[radial-gradient(circle_at_35%_45%,rgba(10,115,199,0.14),transparent_65%)]">
-            <div
-              className="relative w-full max-w-[740px] aspect-[800/560]"
-              data-testid="yemen-distribution-map"
-            >
+          {/* Interactive Map Stage: Live Google Maps or Vector Yemen Network */}
+          {mapMode === 'google' ? (
+            <GoogleMapView
+              branches={filteredBranches}
+              selectedBranch={selectedBranch}
+              hqBranch={hqBranch}
+              showRoutes={showRoutes}
+              onSelectBranch={handleSelectBranch}
+              onSwitchToVectorMap={() => setMapMode('vector')}
+            />
+          ) : (
+            <div className="relative flex-1 flex items-center justify-center px-3 py-3 sm:px-5 sm:py-4 overflow-hidden bg-[radial-gradient(circle_at_35%_45%,rgba(10,115,199,0.14),transparent_65%)]">
+              <div
+                className="relative w-full max-w-[740px] aspect-[800/560]"
+                data-testid="yemen-distribution-map"
+              >
               <svg
                 viewBox={`0 0 ${YEMEN_VIEWBOX.width} ${YEMEN_VIEWBOX.height}`}
                 className="w-full h-full select-none"
@@ -587,7 +649,8 @@ export const DistributionMapView: React.FC = () => {
                 );
               })}
             </div>
-          </div>
+            </div>
+          )}
 
           {/* Quick Active Branch Info Dock */}
           <div className="mx-3 mb-3 sm:mx-4 sm:mb-4 bg-slate-950/95 border border-slate-800 p-3.5 rounded-xl shadow-2xl">

@@ -27,7 +27,7 @@ export const FACTORY_CONTACT = {
   whatsappCatalogRequestUrl:
     'https://wa.me/967776046048?text=%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%AD%D8%B5%D9%88%D9%84%20%D8%B9%D9%84%D9%89%20%D8%A7%D9%84%D9%83%D8%AA%D8%A7%D9%84%D9%88%D8%AC%20%D9%88%D8%AC%D8%AF%D8%A7%D9%88%D9%84%20%D8%A7%D9%84%D9%85%D9%82%D8%A7%D8%B3%D8%A7%D8%AA%20%D8%A7%D9%84%D9%85%D8%B9%D8%AA%D9%85%D8%AF%D8%A9%20%D9%84%D9%85%D8%B5%D9%86%D8%B9%20%D8%AC%D9%8A%D8%B2%D8%A7%D9%86%20M%26B',
   googleProfileShareUrl: 'https://share.google/zlmwZg5PWTy56dQqs',
-  googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=13.5795,44.0209',
+  googleMapsUrl: 'https://maps.app.goo.gl/EGD7CHyzTsSxbzAj6',
   facebookUrl: 'https://www.facebook.com/IbbCity00967771600777/',
   logoSrc: '/assets/aistudio/image-1791387165348__1__e8778707.png',
   officialVideoSrc:

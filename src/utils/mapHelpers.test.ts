@@ -9,7 +9,7 @@ import {
 import { FACTORY_BRANCHES } from '../data/factoryData.js';
 
 test('projectYemenCoords places Yemen branches within SVG viewBox bounds and preserves relative geography', () => {
-  const taiz = projectYemenCoords(13.5795, 44.0209);
+  const taiz = projectYemenCoords(13.7261206, 44.135148);
   const sanaa = projectYemenCoords(15.3694, 44.191);
   const aden = projectYemenCoords(12.8258, 45.0367);
   const hodeidah = projectYemenCoords(14.7978, 42.9545);

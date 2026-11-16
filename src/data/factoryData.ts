@@ -655,12 +655,12 @@ export const CAMPAIGN_30_DAYS: CampaignDay[] = [
 export const FACTORY_BRANCHES: FactoryBranch[] = [
   {
     id: 'gizan-factory-taiz',
-    name: 'المصنع الرئيسي ومجمع الإنتاج - تعز، اليمن',
+    name: 'مصنع جيزان M&B للصناعات البلاستيكية (المقر الرئيسي - تعز)',
     type: 'factory',
     region: 'southern', // المنطقة
     coordinates: {
-      lat: 13.5795,
-      lng: 44.0209,
+      lat: 13.7261206,
+      lng: 44.135148,
     },
     city: 'تعز - الجمهورية اليمنية',
     address: 'الجندية، تعز، الجمهورية اليمنية',

@@ -10,10 +10,12 @@ import { QuoteModal } from './components/QuoteModal';
 import { Footer } from './components/Footer';
 import { ToastProvider } from './context/ToastContext';
 import { ToastContainer } from './components/ToastContainer';
+import { QuotaWarningBanner } from './components/QuotaWarningBanner';
 
 export default function App() {
   const [activeScreen, setActiveScreen] = useState<ActiveScreen>('video');
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState<boolean>(false);
+  const [gmpQuotaExceeded, setGmpQuotaExceeded] = useState<boolean>(false);
 
   // Check URL query parameters (e.g. ?screen=stress-test or ?autostart=1)
   useEffect(() => {
@@ -27,9 +29,18 @@ export default function App() {
     }
   }, []);
 
+  // Listen for global Google Maps Platform quota/auth failure notifications
+  useEffect(() => {
+    const handleQuotaExceeded = () => setGmpQuotaExceeded(true);
+    window.addEventListener('gmp-quota-exceeded', handleQuotaExceeded);
+    return () => window.removeEventListener('gmp-quota-exceeded', handleQuotaExceeded);
+  }, []);
+
   return (
     <ToastProvider>
       <div className="min-h-screen flex flex-col bg-[#071827] text-slate-100 font-['Tajawal',sans-serif]">
+        {gmpQuotaExceeded && <QuotaWarningBanner />}
+
         {/* Main Header / Navigation */}
         <Navbar
           activeScreen={activeScreen}

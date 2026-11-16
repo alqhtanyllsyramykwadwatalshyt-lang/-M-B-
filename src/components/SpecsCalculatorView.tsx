@@ -27,8 +27,10 @@ import {
   Save,
   X,
   Printer,
+  HardDrive,
 } from 'lucide-react';
 import { CatalogBrochureView } from './CatalogBrochureView';
+import { GoogleDriveWorkspace } from './GoogleDriveWorkspace';
 
 const SPEC_STORAGE_KEY = 'jizan_official_spec_fields_v1';
 
@@ -39,7 +41,7 @@ interface SpecsCalculatorViewProps {
 export const SpecsCalculatorView: React.FC<SpecsCalculatorViewProps> = ({ onRequestQuote }) => {
   const { showToast } = useToast();
   const [activeCatalogTab, setActiveCatalogTab] = useState<
-    'brochure' | 'profile-14' | 'catalog' | 'calculator'
+    'brochure' | 'profile-14' | 'catalog' | 'calculator' | 'drive'
   >('brochure');
   const [selectedProfileSection, setSelectedProfileSection] = useState<string>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('pipes');
@@ -178,7 +180,7 @@ export const SpecsCalculatorView: React.FC<SpecsCalculatorViewProps> = ({ onRequ
         </div>
       </section>
 
-      {/* Main Mode Tabs: Brochure (PDF/Word) | 14-Section Introductory Catalog | 5 Product Categories | Calculator & Official Spec Fields */}
+      {/* Main Mode Tabs: Brochure (PDF/Word) | 14-Section Introductory Catalog | 5 Product Categories | Calculator & Official Spec Fields | Google Drive */}
       <div className="no-print flex flex-wrap items-center gap-2 border-b border-slate-800 pb-3">
         <button
           type="button"
@@ -186,14 +188,14 @@ export const SpecsCalculatorView: React.FC<SpecsCalculatorViewProps> = ({ onRequ
             setActiveCatalogTab('brochure');
             soundEffects.playClick();
           }}
-          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
+          className={`px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer whitespace-nowrap shrink-0 ${
             activeCatalogTab === 'brochure'
               ? 'bg-[#C81D25] text-white shadow-md'
               : 'text-slate-300 hover:text-white bg-slate-900/60 border border-slate-800'
           }`}
         >
-          <Printer className="w-4 h-4" />
-          <span>بروشور الكتالوج الاحترافي (PDF / Word)</span>
+          <Printer className="w-4 h-4 shrink-0" />
+          <span>بروشور الكتالوج (PDF / Word)</span>
         </button>
 
         <button
@@ -202,14 +204,14 @@ export const SpecsCalculatorView: React.FC<SpecsCalculatorViewProps> = ({ onRequ
             setActiveCatalogTab('profile-14');
             soundEffects.playClick();
           }}
-          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
+          className={`px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer whitespace-nowrap shrink-0 ${
             activeCatalogTab === 'profile-14'
               ? 'bg-[#0A73C7] text-white shadow-md'
               : 'text-slate-300 hover:text-white bg-slate-900/60 border border-slate-800'
           }`}
         >
-          <Award className="w-4 h-4" />
-          <span>الكتالوج التعريفي الشامل (14 محوراً)</span>
+          <Award className="w-4 h-4 shrink-0" />
+          <span>الملف التعريفي (14 محوراً)</span>
         </button>
 
         <button
@@ -218,14 +220,14 @@ export const SpecsCalculatorView: React.FC<SpecsCalculatorViewProps> = ({ onRequ
             setActiveCatalogTab('catalog');
             soundEffects.playClick();
           }}
-          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
+          className={`px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer whitespace-nowrap shrink-0 ${
             activeCatalogTab === 'catalog'
               ? 'bg-[#0A73C7] text-white shadow-md'
               : 'text-slate-300 hover:text-white bg-slate-900/60 border border-slate-800'
           }`}
         >
-          <BookOpen className="w-4 h-4" />
-          <span>كتالوج المنتجات (المواسير والتوصيلات)</span>
+          <BookOpen className="w-4 h-4 shrink-0" />
+          <span>كتالوج المنتجات</span>
         </button>
 
         <button
@@ -234,20 +236,52 @@ export const SpecsCalculatorView: React.FC<SpecsCalculatorViewProps> = ({ onRequ
             setActiveCatalogTab('calculator');
             soundEffects.playClick();
           }}
-          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
+          className={`px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer whitespace-nowrap shrink-0 ${
             activeCatalogTab === 'calculator'
               ? 'bg-[#0A73C7] text-white shadow-md'
               : 'text-slate-300 hover:text-white bg-slate-900/60 border border-slate-800'
           }`}
         >
-          <Calculator className="w-4 h-4" />
-          <span>حاسبة التدفق وهيكل الجداول الرسمية</span>
+          <Calculator className="w-4 h-4 shrink-0" />
+          <span>الحاسبة وجداول المواصفات</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            setActiveCatalogTab('drive');
+            soundEffects.playClick();
+          }}
+          data-testid="tab-google-drive"
+          className={`px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer whitespace-nowrap shrink-0 ${
+            activeCatalogTab === 'drive'
+              ? 'bg-emerald-600 text-white shadow-md'
+              : 'text-slate-300 hover:text-white bg-slate-900/60 border border-slate-800'
+          }`}
+        >
+          <HardDrive className="w-4 h-4 shrink-0" />
+          <span>مزامنة Google Drive</span>
         </button>
       </div>
 
       {/* VIEW BROCHURE: Executive Printable & Word/HTML Exportable Catalog */}
       {activeCatalogTab === 'brochure' && (
-        <CatalogBrochureView specRows={specRows} onRequestQuote={onRequestQuote} />
+        <CatalogBrochureView
+          specRows={specRows}
+          onRequestQuote={onRequestQuote}
+          onOpenGoogleDrive={() => setActiveCatalogTab('drive')}
+        />
+      )}
+
+      {/* VIEW GOOGLE DRIVE: Save & Browse Catalog / Specs Files */}
+      {activeCatalogTab === 'drive' && (
+        <GoogleDriveWorkspace
+          specRows={specRows}
+          onImportSpecRows={(importedRows) => {
+            setSpecRows(importedRows);
+            setActiveCatalogTab('calculator');
+          }}
+        />
       )}
 
       {/* VIEW 0: Complete 14-Section Introductory Catalog */}

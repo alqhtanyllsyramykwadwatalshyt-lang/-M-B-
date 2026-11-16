@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   AlertTriangle,
   Layers,
+  CloudUpload,
 } from 'lucide-react';
 import {
   FACTORY_CONTACT,
@@ -33,6 +34,7 @@ import qualityBenchImg from '../assets/images/jizan_quality_inspection_bench_179
 interface CatalogBrochureViewProps {
   specRows: SpecRowExport[];
   onRequestQuote: () => void;
+  onOpenGoogleDrive?: () => void;
 }
 
 interface BrochureImageProps {
@@ -77,6 +79,7 @@ const BrochureImage: React.FC<BrochureImageProps> = ({
 export const CatalogBrochureView: React.FC<CatalogBrochureViewProps> = ({
   specRows,
   onRequestQuote,
+  onOpenGoogleDrive,
 }) => {
   const { showToast } = useToast();
 
@@ -160,6 +163,21 @@ export const CatalogBrochureView: React.FC<CatalogBrochureViewProps> = ({
             <FileCode2 className="w-4 h-4 text-sky-400" />
             <span>تحميل نسخة HTML</span>
           </button>
+
+          {onOpenGoogleDrive && (
+            <button
+              type="button"
+              onClick={() => {
+                soundEffects.playClick();
+                onOpenGoogleDrive();
+              }}
+              data-testid="open-drive-from-brochure-btn"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer whitespace-nowrap shrink-0"
+            >
+              <CloudUpload className="w-4 h-4" />
+              <span>حفظ في Google Drive</span>
+            </button>
+          )}
         </div>
       </div>
 
